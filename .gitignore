@@ -1,0 +1,9 @@
+# Output/Reference Data
+test-data/*/outputs
+test-data/*/references
+
+# Plugin binaries
+plugins/*.vst3
+
+# Ergo output
+ergo_out.json
