@@ -1,0 +1,68 @@
+name: Run Tests
+
+on:
+  schedule:
+    - cron: '0 11 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  run_ergo:
+    name: Run ergo regression tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Linux deps
+      run: |
+        sudo apt-get update
+        sudo apt install libasound2-dev libx11-dev libxcomposite-dev libxext-dev
+        sudo apt install putty-tools
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 9
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9
+
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    
+    - name: Clone ergo
+      uses: actions/checkout@v2
+      with:
+        repository: Chowdhury-DSP/ergo
+        path: ergo
+        token: ${{ secrets.OUR_GITHUB_PAT }}
+    
+    - name: Get latest CMake
+      uses: lukka/get-cmake@latest
+    
+    - name: Build ergo
+      working-directory: ergo
+      run: |
+        cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --parallel 2
+
+    - name: Download reference data
+      env:
+        CCRMA_PASS: ${{ secrets.CCRMA_PASS }}
+      run: |
+        echo y | pscp -pw $CCRMA_PASS -r jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/references test-data/BYOD/references
+
+    - name: Run ergo
+      run: ./ergo/build/Release/ergo test_plan.json
+
+    - name: Upload reference data
+      env:
+        CCRMA_PASS: ${{ secrets.CCRMA_PASS }}
+      run: |
+        echo y | pscp -pw $CCRMA_PASS -r test-data/BYOD/references jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/references
+
+    - name: Send email notification
+      if: always()
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: chowdsp
+        password: ${{ secrets.GMAIL_PASS }}
+        subject: "ChowDSP ergo report"
+        html_body: file://ergo_out.json
+        to: chowdsp@gmail.com
+        from: ChowDSP ergo
