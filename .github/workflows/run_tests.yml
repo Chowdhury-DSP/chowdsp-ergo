@@ -37,7 +37,7 @@ jobs:
       working-directory: ergo
       run: |
         cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
-        cmake --build build --parallel 2
+        cmake --build build --parallel 2 --target ergo
 
     - name: Download reference data
       env:
@@ -46,7 +46,7 @@ jobs:
         echo y | pscp -pw $CCRMA_PASS -r jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/references test-data/BYOD/references
 
     - name: Run ergo
-      run: ./ergo/build/Release/ergo test_plan.json
+      run: ./ergo/build/ergo test_plan.json
 
     - name: Upload reference data
       env:
