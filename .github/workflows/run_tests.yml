@@ -52,11 +52,11 @@ jobs:
       env:
         CCRMA_PASS: ${{ secrets.CCRMA_PASS }}
       run: |
-        echo y | pscp -pw $CCRMA_PASS -r test-data/BYOD/references jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/references
+        echo y | pscp -pw $CCRMA_PASS -r test-data/BYOD/references jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/
 
     - name: Send email notification
       if: always()
-      uses: dawidd6/action-send-mail@v2
+      uses: dawidd6/action-send-mail@v3.6.1
       with:
         server_address: smtp.gmail.com
         server_port: 465
