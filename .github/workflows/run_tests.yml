@@ -48,6 +48,9 @@ jobs:
     - name: Run ergo
       run: ./ergo/build/ergo test_plan.json
 
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+
     - name: Upload reference data
       env:
         CCRMA_PASS: ${{ secrets.CCRMA_PASS }}

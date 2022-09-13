@@ -7,3 +7,5 @@ plugins/*.vst3
 
 # Ergo output
 ergo_out.json
+
+.DS_Store
