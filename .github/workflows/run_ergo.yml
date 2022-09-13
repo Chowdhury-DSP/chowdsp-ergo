@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Ergo
 
 on:
   schedule:
@@ -47,9 +47,6 @@ jobs:
 
     - name: Run ergo
       run: ./ergo/build/ergo test_plan.json
-
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
 
     - name: Upload reference data
       env:
