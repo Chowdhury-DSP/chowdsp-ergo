@@ -1,8 +1,5 @@
 {
     "plugins": [
-
-
-
         {
             "name": "ChowKick",
             "acquire_script": "sudo bash ./plugins/acquire_chowkick.sh",
