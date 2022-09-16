@@ -1,6 +1,17 @@
 {
     "plugins": [
         {
+            "name": "ChowKick",
+            "acquire_script": "sudo bash ./plugins/acquire_chowkick.sh",
+            "plugin_path": "plugins/ChowKick.vst3",
+            "block_size": 512,
+            "plugin_states_dir": "test-data/ChowKick/states",
+            "plugin_inputs_dir": "test-data/ChowKick/inputs",
+            "plugin_references_dir": "test-data/ChowKick/references",
+            "plugin_outputs_dir": "test-data/ChowKick/outputs",
+            "plugin_type": "midi_in_audio_out"
+        },
+        {
             "name": "BYOD",
             "acquire_script": "sudo bash ./plugins/acquire_byod.sh",
             "plugin_path": "plugins/BYOD.vst3",
@@ -8,7 +19,12 @@
             "plugin_states_dir": "test-data/BYOD/states",
             "plugin_inputs_dir": "test-data/BYOD/inputs",
             "plugin_references_dir": "test-data/BYOD/references",
-            "plugin_outputs_dir": "test-data/BYOD/outputs"
+            "plugin_outputs_dir": "test-data/BYOD/outputs",
+            "plugin_type": "audio_in_audio_out"
         }
+
+
+
     ]
+
 }

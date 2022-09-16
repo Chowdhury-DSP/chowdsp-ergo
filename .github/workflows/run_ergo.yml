@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 11 * * *'
 
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
 
 jobs:
@@ -27,6 +31,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: Chowdhury-DSP/ergo
+        ref: main
         path: ergo
         token: ${{ secrets.OUR_GITHUB_PAT }}
     
@@ -44,6 +49,7 @@ jobs:
         CCRMA_PASS: ${{ secrets.CCRMA_PASS }}
       run: |
         echo y | pscp -pw $CCRMA_PASS -r jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/references test-data/BYOD/references
+        echo y | pscp -pw $CCRMA_PASS -r jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/ChowKick/references test-data/ChowKick/references
 
     - name: Run ergo
       run: ./ergo/build/ergo test_plan.json
@@ -53,9 +59,10 @@ jobs:
         CCRMA_PASS: ${{ secrets.CCRMA_PASS }}
       run: |
         echo y | pscp -pw $CCRMA_PASS -r test-data/BYOD/references jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/BYOD/
+        echo y | pscp -pw $CCRMA_PASS -r test-data/ChowKick/references jatin@ccrma-gate.stanford.edu:/user/j/jatin/Documents/ChowDSP/ergo/chowdsp-ergo/test-data/ChowKick/
 
     - name: Send email notification
-      if: always()
+      if: always() && github.event_name != 'pull_request'
       uses: dawidd6/action-send-mail@v3.6.1
       with:
         server_address: smtp.gmail.com
