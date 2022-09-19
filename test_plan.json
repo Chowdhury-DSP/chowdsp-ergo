@@ -22,9 +22,5 @@
             "plugin_outputs_dir": "test-data/BYOD/outputs",
             "plugin_type": "audio_in_audio_out"
         }
-
-
-
     ]
-
 }

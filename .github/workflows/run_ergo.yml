@@ -33,8 +33,9 @@ jobs:
         repository: Chowdhury-DSP/ergo
         ref: main
         path: ergo
+        submodules: recursive
         token: ${{ secrets.OUR_GITHUB_PAT }}
-    
+
     - name: Get latest CMake
       uses: lukka/get-cmake@latest
     
